@@ -13,22 +13,21 @@ export default function Home() {
 
 
 
-    <div>
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4">
+<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh' }}>
+<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 ">
 
     <MdArrowBack size={24} />
-    Profile
+    <div>Profile</div>
+      
     <FiSettings size={24} /> 
     
     </div>
 
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4">
 
       <Avatar>
           <AvatarImage src="https://github.com/shadcn.png" />
           <AvatarFallback>CN</AvatarFallback>
       </Avatar>
-    </div>
   </div>
 
 
