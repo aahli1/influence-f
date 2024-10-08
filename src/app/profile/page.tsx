@@ -5,6 +5,9 @@ import { MdArrowBack} from 'react-icons/md';
 import { FiSettings } from 'react-icons/fi';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import './profile.css'; 
+import EditableInput from '@/components/EditableInput';
+
+
 
 export default function Home() {
 
@@ -16,6 +19,7 @@ export default function Home() {
   <div className="row">
     <div className="arrow">←</div>
     <div className="profileText">Profile</div>
+
     <div className="settings">    <FiSettings size={24} /> </div> 
   </div>
 
@@ -27,9 +31,29 @@ export default function Home() {
   </div>
 
   <div className="row">
-    <div className="centerText">Item 1</div>
-        <div className="centerText">Item 2</div>
-        <div className="centerText">Item 3</div>
+        <div className="centerText">Name of Candidate</div>
+        
+  </div>
+
+
+  <div className="row">
+        <div className="centerText"> <EditableInput />
+        </div>
+        
+  </div>
+
+  <div className="row">
+    <div className="centerText">Age</div>
+    <div></div>
+        <div className="centerText">AUDUAD</div>
+        <div className="centerText">19</div>
+  </div>
+
+  <div className="row">
+    <div className="centerText">39</div>
+    <div></div>
+        <div className="centerText">primary diagnostic</div>
+        <div className="centerText">Following</div>
   </div>
 
   <div className="textboxRow">
