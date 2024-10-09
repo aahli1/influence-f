@@ -31,13 +31,13 @@ export default function Home() {
   </div>
 
   <div className="row">
-        <div className="centerText">Name of Candidate</div>
+        <div className="centerText">Brief Introduction</div>
         
   </div>
 
 
-  <div className="row">
-        <div className="centerText"> <EditableInput />
+  <div className="editrow">
+        <div> <EditableInput />
         </div>
         
   </div>
@@ -56,10 +56,58 @@ export default function Home() {
         <div className="centerText">Following</div>
   </div>
 
+  
+  
   <div className="textboxRow">
-        <input type="text" className="textbox" placeholder="Enter text here" />
+        <div>My Bio</div>      
   </div>
 
+  <div style={{
+      borderBottom: '1px solid #011', // Adjust thickness and color
+      width: '100%', // Adjust width of the line (100% will span across the container)
+      margin: '20px 0' // Optional margin for spacing
+    }}></div>
+
+  <div className="textbox">
+        <div> <EditableInput />
+        </div>
+        
+  </div>
+
+  <div className="textboxRow">
+        <div>My Story</div>
+        
+  </div>
+
+  <div style={{
+      borderBottom: '1px solid #011', // Adjust thickness and color
+      width: '100%', // Adjust width of the line (100% will span across the container)
+      margin: '20px 0' // Optional margin for spacing
+    }}></div>
+
+
+  <div className="textbox">
+        <div> <EditableInput />
+        </div>
+        
+  </div>
+
+  <div className="textboxRow">
+        <div>Stuff I'm into</div>
+        
+  </div>
+
+  <div style={{
+      borderBottom: '1px solid #011', // Adjust thickness and color
+      width: '100%', // Adjust width of the line (100% will span across the container)
+      margin: '20px 0' // Optional margin for spacing
+    }}></div>
+
+  <div className="textbox">
+        <div> <EditableInput />
+        </div>
+        
+  </div>
 </div>
 
   );

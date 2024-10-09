@@ -12,6 +12,14 @@
     margin: 10px 0;
   }
   
+  .editrow {
+    display: flex;
+    justify-content: center;
+    margin: 1px 00;
+    width: 100%;
+
+  }
+
   .arrow {
     flex: 1;
     text-align: center;
@@ -51,16 +59,17 @@
   
   .textboxRow {
     display: flex;
-    justify-content: center;
-    margin-top: 20px;
+    justify-content: left;
+    font-weight: bold;
+    padding: 10px;
+    margin-top: 10px;
   }
   
   .textbox {
-    width: 80%;
-    padding: 10px;
+    width: 50%;
+    padding-top: 0px;
     font-size: 16px;
     text-align: center;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+     
   }
   

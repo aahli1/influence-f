@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"; // Shadcn Button component
 
 const EditableInput: React.FC = () => {
   const [isEditing, setIsEditing] = useState(false);
-  const [inputValue, setInputValue] = useState('Description');
+  const [inputValue, setInputValue] = useState('Enter Text');
   const [tempValue, setTempValue] = useState(inputValue);
 
   // Enable editing mode
