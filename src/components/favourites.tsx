@@ -1,6 +1,9 @@
-"use client";
+"use client"; // Add this directive
 
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchApiData } from "@/features/apiSlice";
+import { RootState } from "@/store";
 import {
   Card,
   CardContent,
@@ -58,13 +61,20 @@ const CardComponent: FC<CardComponentProps> = ({
 );
 
 const CardOne = require("../assets/card1.png");
-const CardTwo = require("../assets/card2.png");
-const CardThree = require("../assets/card3.png");
-const CardFour = require("../assets/card4.png");
-const CardFive = require("../assets/card5.png");
-const CardSix = require("../assets/card6.png");
 
 const Favourites: FC = () => {
+  const dispatch = useDispatch();
+  const apiData = useSelector((state: RootState) => state.api.data);
+  const apiStatus = useSelector((state: RootState) => state.api.status);
+
+  useEffect(() => {
+    if (apiStatus === "idle") {
+      dispatch(fetchApiData());
+    }
+  }, [dispatch, apiStatus]);
+
+  const title = apiData["https://apis.guru"]?.info?.title || "Default Title";
+
   return (
     <div>
       <p className="font-bold text-4xl">Favourites</p>
@@ -72,33 +82,8 @@ const Favourites: FC = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4">
         <CardComponent
           image={CardOne}
-          title="Ms. Saint-Martin Doranyia Pascal"
-          description="Hi This is your Miss Teen Carnival 2022 Doranyia Pascal I will be representing Saint Martin..."
-        />
-        <CardComponent
-          image={CardTwo}
-          title="Educación en Academia de..."
-          description="Hola, mi nombre es Xhaomi Torres soy la madre de Joseph Y. Christian Torres. Joseph es..."
-        />
-        <CardComponent
-          image={CardThree}
-          title="Aidez la famille Mimba...."
-          description="À la mi-septembre, les enfants MIMBA ont été profondément affectés par la..."
-        />
-        <CardComponent
-          image={CardFour}
-          title="Ms. Saint-Martin Doranyia Pascal"
-          description="Hi This is your Miss Teen Carnival 2022 Doranyia Pascal I will be representing Saint Martin..."
-        />
-        <CardComponent
-          image={CardFive}
-          title="Educación en Academia de..."
-          description="Hola, mi nombre es Xhaomi Torres soy la madre de Joseph Y. Christian Torres. Joseph es..."
-        />
-        <CardComponent
-          image={CardSix}
-          title="Aidez la famille Mimba...."
-          description="À la mi-septembre, les enfants MIMBA ont été profondément affectés par la..."
+          title={title}
+          description="API title fetched from https://apis.guru"
         />
       </div>
     </div>

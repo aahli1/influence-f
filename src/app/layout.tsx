@@ -1,5 +1,8 @@
+// src/app/layout.tsx
+
 import Footer from "@/components/footer";
 import Header from "@/components/header";
+import ClientProvider from "@/components/ClientProvider"; // Import the client-side provider
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
@@ -13,16 +16,16 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
       <body className={inter.className}>
         <Header />
-        {children}
+        <ClientProvider>{children}</ClientProvider> {/* Wrap with client-side provider */}
         <Footer />
-        </body>
+      </body>
     </html>
   );
 }
