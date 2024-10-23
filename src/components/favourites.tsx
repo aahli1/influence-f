@@ -1,6 +1,6 @@
 "use client"; // Add this directive
 
-import React, { FC, useEffect } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchApiData } from "@/features/apiSlice";
 import { RootState } from "@/store";
@@ -10,27 +10,31 @@ import {
   CardDescription,
   CardTitle,
 } from "@/components/ui/card";
-import Image, { StaticImageData } from "next/image";
-import profil from "../assets/profile.png";
+import Image from "next/image";
+import profil from "../assets/profile.png"; // Default profile image
 
-// Interface for the card component props
 interface CardComponentProps {
-  image: StaticImageData;
+  image: string | StaticImageData;
   title: string;
   description: string;
+  email: string;
+  date: string;
 }
 
-// Card component definition
 const CardComponent: FC<CardComponentProps> = ({
   image,
   title,
   description,
+  email,
+  date,
 }) => (
   <Card className="rounded-[20px] w-full">
     <Image
       src={image}
       alt={title}
       className="h-48 w-full object-cover rounded-t-[20px]"
+      width={400}
+      height={200}
     />
     <CardContent className="p-4">
       <CardTitle className="text-xl font-bold">{title}</CardTitle>
@@ -45,6 +49,8 @@ const CardComponent: FC<CardComponentProps> = ({
         />
         <p className="pt-3 pl-4">Olivia Rhye</p>
       </div>
+      <p className="pt-1 text-gray-500">{email}</p>
+      <p className="pt-1 text-gray-500">Date: {date ? new Date(date).toLocaleDateString() : "No date available"}</p>
       <div className="pt-4">
         <div className="h-2 bg-green-300 rounded-full relative">
           <div className="w-3/4 h-full bg-green-500 rounded-full"></div>
@@ -62,55 +68,93 @@ const CardComponent: FC<CardComponentProps> = ({
   </Card>
 );
 
-// Image imports for each card
-const cardImages = [
-  require("../assets/card1.png"),
-  require("../assets/card2.png"),
-  require("../assets/card3.png"),
-  require("../assets/card4.png"),
-  require("../assets/card5.png"),
-  require("../assets/card6.png"),
-];
-
 const Favourites: FC = () => {
   const dispatch = useDispatch();
   const apiData = useSelector((state: RootState) => state.api.data);
   const apiStatus = useSelector((state: RootState) => state.api.status);
 
-  // Fetch API data on component mount
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 30; // Set the number of items per page
+
   useEffect(() => {
     if (apiStatus === "idle") {
       dispatch(fetchApiData());
     }
   }, [dispatch, apiStatus]);
 
-  // Log the API data to check its structure
-  useEffect(() => {
-    console.log("API Data:", apiData);
-  }, [apiData]);
+  // Calculate total pages
+  const totalItems = Object.keys(apiData).length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
 
-  // Generate cards from API data
-  const cards = Object.entries(apiData)
-    .slice(0, 6) // Limit to 6 items
-    .map(([key, value], index) => ({
-      title: value.info?.title || `Default Title ${index + 1}`,
-      description: value.info?.description || "No description available.",
-      image: cardImages[index] || cardImages[0], // Fallback to the first image if not enough
-    }));
+  // Slice data based on current page
+  const startIdx = (currentPage - 1) * itemsPerPage;
+  const endIdx = startIdx + itemsPerPage;
+  const currentData = Object.keys(apiData).slice(startIdx, endIdx).map((key) => {
+    const apiInfo = apiData[key]?.versions?.[apiData[key]?.preferred]?.info;
+
+    const image = apiInfo?.["x-logo"]?.url || profil;
+    const title = apiInfo?.title || "Default Title";
+    const description = apiInfo?.description || "No description available";
+    const email = apiInfo?.contact?.email || "No email available";
+
+    const rootDate = apiData[key]?.added || "";
+    const versionDate = apiData[key]?.versions?.[apiData[key]?.preferred]?.added || "";
+    const date = rootDate || versionDate || "No date available";
+
+    return (
+      <CardComponent
+        key={key}
+        image={image}
+        title={title}
+        description={description}
+        email={email}
+        date={date}
+      />
+    );
+  });
+
+  // Pagination Controls
+  const handleNext = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage((prev) => prev + 1);
+    }
+  };
+
+  const handlePrev = () => {
+    if (currentPage > 1) {
+      setCurrentPage((prev) => prev - 1);
+    }
+  };
 
   return (
     <div>
       <p className="font-bold text-4xl">Favourites</p>
       <p className="text-lg pb-8">Como você pretende ajudar o mundo hoje.</p>
+      
+      {/* Cards Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4">
-        {cards.map((card, index) => (
-          <CardComponent
-            key={index}
-            image={card.image}
-            title={card.title}
-            description={card.description}
-          />
-        ))}
+        {currentData}
+      </div>
+
+      {/* Pagination Controls */}
+      <div className="flex justify-between items-center pt-8">
+        <button
+          className={`p-2 bg-gray-200 ${currentPage === 1 ? "opacity-50" : ""}`}
+          onClick={handlePrev}
+          disabled={currentPage === 1}
+        >
+          Previous
+        </button>
+
+        <span>Page {currentPage} of {totalPages}</span>
+
+        <button
+          className={`p-2 bg-gray-200 ${currentPage === totalPages ? "opacity-50" : ""}`}
+          onClick={handleNext}
+          disabled={currentPage === totalPages}
+        >
+          Next
+        </button>
       </div>
     </div>
   );
